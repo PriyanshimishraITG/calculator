@@ -6,7 +6,6 @@
     <title>Calculator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRbTcd4fC2OELaCftkk8K1eznIdOOIvIsF8A&s/images/favicon.ico">
-
     <style>
         * {
             margin: 0px;
@@ -22,7 +21,7 @@
             padding: 20px;
             background: rgb(255, 255, 255, 0);
             border-radius: 20px;
-            box-shadow: 0 0 15px #aaa;
+            box-shadow: 0 0 15px 5px #aaa;
             position: absolute;
             bottom: 50px;
             top: 150px;
@@ -31,7 +30,7 @@
         }
         .calculator1 {
             border: 1px solid gray;
-            box-shadow: 0 0 20px 5px #888;
+            box-shadow: 0 0 20px 10px #000;
         }
         .display {
             color: white;
@@ -43,10 +42,12 @@
             margin-bottom: 10px;
             min-height: 40px;
             border: 1px solid #ccc;
+            box-shadow: inset 0 0 15px 5px #505050;
         }
         .display1 {
             color: black;
-            border: 1px solid #6e747a;
+            border: 1px solid gray;
+            box-shadow: inset 0 0 15px 5px rgba(0,0,0,0.5);
         }
         .buttons {
             display: grid;
@@ -96,6 +97,10 @@
         }
         .equal:hover, .kgf:hover {
             background: linear-gradient(to right, white, rgb(2, 183, 255));
+        }
+        .img_div {
+            height: 91.2vh;  
+            overflow: hidden; 
         }
         #bg_img {
             background-repeat: no-repeat;
@@ -154,7 +159,6 @@
             text-align: center;
         }
     </style>
-
 </head>
 <body>
     <header>
@@ -163,11 +167,9 @@
             <div> <i class="fa fa-adjust" id = "theme" onclick = "themeMode ()"></i> </div>
         </div>
     </header>
-
     <div class = "mbox">
         <span id = "typer"></span>
     </div>
-
     <div id = "welcome" class = "welcome">
         <div class = "innerone">
             <div>
@@ -176,15 +178,13 @@
             <div class = "popbtn"> <button class = "btnpop" onclick = "clicknow ()"> <b> OK </b> </button> </div>
         </div>
     </div>
-
     <div id = "box" class = "deactive">
-        <div>
+        <div class="img_div">
             <img src = "https://wallpaperbat.com/img/632439-nature-night-hd-wallpaper.jpg"  id = "bg_img">
         </div>
         <div class="calculator" id = "calc">
             <div class="display" id="displaynum"></div>
             <div class="buttons">
-                
                 <button class="kgf new0"onclick="clearDisplay()"> <b> C </b> </button>
                 <button class="rrr new"onclick="appendValue('(')"> <b> ( </b> </button>
                 <button class="rrr new"onclick="appendValue(')')"> <b> ) </b> </button>
@@ -209,22 +209,42 @@
                 <button onclick="appendValue('0')" class="color1 new1"> <b> 0 </b> </button>
                 <button class="rrr new"onclick="appendValue('%')"> <b> % </b> </button>
                 <button class="equal new0" onclick="calculate()"> <b> = </b> </button>
-
             </div>
         </div>
     </div>
-
     <script>
         let display = document.getElementById('displaynum');
+        let justCalculated = false;
         function appendValue (value) {
-            display.innerText += value;
+            if (justCalculated) {
+                display.innerText = "";
+                justCalculated = false;
+            };
+            const lastChar = display.innerText.charAt(display.innerText.length - 1);
+            if (['+', '-', '*', '/', '.', '%'].includes(value) && ['+', '-', '*', '/', '.', '%'].includes(lastChar)) {
+                display.innerText = display.innerText.slice(0, -1) + value;
+            } else {
+                display.innerText += value;
+            };
+            document.getElementById('display').value = display.innerText;
         };
         function clearDisplay () {
             display.innerText = "";
+            justCalculated = false;
         };
         function calculate() {
-            
+            try {
+                if (display.innerText.trim() === "") {
+                    display.innerText = "";
+                } else {
+                    display.innerText = eval(display.innerText);
+                    justCalculated = true;
+                }
+            } catch {
+                display.innerText = "";
+            };
         };
+
         let boxneww = document.getElementById("welcome");
         setTimeout (() => {
             boxneww.style.display = "inline-block";
@@ -249,13 +269,12 @@
                     typer.innerText = typer.innerText.slice(0, -1)
                     typer.innerText += word[j];
                     typer.innerText += "|"
-                }
-                else {
+                } else {
                     stopinterval();
-                }
+                };
                 function stopinterval() {
                     clearInterval(value)
-                }
+                };
                 j++;
             }, 100);
             i++;
@@ -271,7 +290,6 @@
         let e = document.querySelectorAll(".new1");
         let f = document.querySelectorAll(".new0");
         let g = document.querySelector(".equal");
-
         function themeMode () {
             if (a.getAttribute("src") === "https://wallpaperbat.com/img/632439-nature-night-hd-wallpaper.jpg") {
                 a.setAttribute("src", "https://assets.weforum.org/article/image/0ZUBmNNVLRCfn3NdU55nQ00UF64m2ObtcDS0grx02fA.jpg");
@@ -294,8 +312,638 @@
             });
             g.classList.toggle("equal1");
         };
-        
     </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRbTcd4fC2OELaCftkk8K1eznIdOOIvIsF8A&s/images/favicon.ico">
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+        .color1 {
+            color: white;
+        }
+        .calculator {
+            width: 300px;
+            height: 450px;
+            margin: auto;
+            padding: 20px;
+            background: rgb(255, 255, 255, 0);
+            border-radius: 20px;
+            box-shadow: 0 0 15px 5px #aaa;
+            position: absolute;
+            bottom: 50px;
+            top: 150px;
+            left: 50px;
+            right: 50px;
+        }
+        .calculator1 {
+            border: 1px solid gray;
+            box-shadow: 0 0 20px 10px #000;
+        }
+        .display {
+            color: white;
+            background: rgb(255, 255, 255, 0);
+            padding: 20px;
+            font-size: 28px;
+            text-align: right;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            min-height: 40px;
+            border: 1px solid #ccc;
+            box-shadow: inset 0 0 15px 5px #505050;
+        }
+        .display1 {
+            color: black;
+            border: 1px solid gray;
+            box-shadow: inset 0 0 15px 5px rgba(0,0,0,0.5);
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        button {
+            padding: 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: 0.2s;
+            background: linear-gradient(to right, blue, skyblue);
+        }
+        .button1 {
+            background: linear-gradient(to right, rgb(2, 183, 255), white);
+            opacity: 0.7;
+        }
+        .color2 {
+            color: #000;
+        }
+        .kgf {
+            color: red;
+            background: linear-gradient(to right, rgb(2, 183, 255), white);
+        }
+        .rrr {
+            color: blue;
+        }
+        .rrr:hover {
+            color: white;
+        }
+        .equal {
+            background: linear-gradient(to right, rgb(2, 183, 255), white);
+            color: black;
+            border-radius: 50%;
+        }
+        .color0 {
+            background: linear-gradient(to right, #07f5c5, white);
+        }
+        .equal1 {
+            color: #0f7280;
+        }
+        button:hover {
+            background: linear-gradient(to right, skyblue, blue);
+            color: black;
+        }
+        .equal:hover, .kgf:hover {
+            background: linear-gradient(to right, white, rgb(2, 183, 255));
+        }
+        .img_div {
+            height: 91.2vh;  
+            overflow: hidden; 
+        }
+        #bg_img {
+            background-repeat: no-repeat;
+            width: 100%;
+            position: relative;
+            object-fit: cover;
+        }
+        header {
+            background-color: black;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            width: 1337px;
+            margin: auto;
+        }
+        #theme {
+            color: white;
+            padding: 20px;
+        }
+        #logo {
+            height: 50px;
+        }
+        .welcome{
+            display: inline-block;
+            border: 5px solid#07f5c5;
+            border-radius: 20px;
+            padding: 4px;
+            position: absolute;
+            z-index: 88;
+            left: 39%;
+            display: none;
+        }
+        .innerone{
+            border: 3px solid#07f5c5;
+            border-radius: 15px;
+            padding: 10px;
+            background-color: white;
+        }
+        .popbtn{
+            display: flex;
+            justify-content: center;
+        }
+        .btnpop {
+            background: linear-gradient(to right, #07f5c5, white);
+        }
+        .mbox {
+            background: linear-gradient(to bottom, rgb(2, 183, 255), #07f5c5);
+            color: white;
+            margin: 0 auto;
+            font-size: 35px;
+            height: 50px;
+            width: 100%;  
+            position: absolute;
+            z-index: 3;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class = "header">
+            <div><img src="data:image/png;base64,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" alt="" id = "logo"></div>
+            <div> <i class="fa fa-adjust" id = "theme" onclick = "themeMode ()"></i> </div>
+        </div>
+    </header>
+    <div class = "mbox">
+        <span id = "typer"></span>
+    </div>
+    <div id = "welcome" class = "welcome">
+        <div class = "innerone">
+            <div>
+                <h2 class = "h2">Welcome to my website!</h2>
+            </div>
+            <div class = "popbtn"> <button class = "btnpop" onclick = "clicknow ()"> <b> OK </b> </button> </div>
+        </div>
+    </div>
+    <div id = "box" class = "deactive">
+        <div class="img_div">
+            <img src = "https://wallpaperbat.com/img/632439-nature-night-hd-wallpaper.jpg"  id = "bg_img">
+        </div>
+        <div class="calculator" id = "calc">
+            <div class="display" id="displaynum"></div>
+            <div class="buttons">
+                <button class="kgf new0"onclick="clearDisplay()"> <b> C </b> </button>
+                <button class="rrr new"onclick="appendValue('(')"> <b> ( </b> </button>
+                <button class="rrr new"onclick="appendValue(')')"> <b> ) </b> </button>
+                <button class="rrr new"onclick="appendValue('/')"> <b> ÷ </b></button>
 
+                <button onclick="appendValue('7')" class="color1 new1"> <b> 7 </b> </button>
+                <button onclick="appendValue('8')" class="color1 new1"> <b> 8 </b> </button>
+                <button onclick="appendValue('9')" class="color1 new1"> <b> 9 </b> </button>
+                <button class="rrr new"onclick="appendValue('*')"> <b> x </b></button>
+
+                <button onclick="appendValue('4')" class="color1 new1"> <b> 4 </b> </button>
+                <button onclick="appendValue('5')" class="color1 new1"> <b> 5 </b> </button>
+                <button onclick="appendValue('6')" class="color1 new1"> <b> 6 </b> </button>
+                <button class="rrr new"onclick="appendValue('-')"> <b> - </b> </button>
+
+                <button onclick="appendValue('1')" class="color1 new1"> <b> 1 </b> </button>
+                <button onclick="appendValue('2')" class="color1 new1"> <b> 2 </b> </button>
+                <button onclick="appendValue('3')" class="color1 new1"> <b> 3 </b> </button>
+                <button class="rrr new"onclick="appendValue('+')"> <b> + </b> </button> 
+
+                <button class="rrr new"onclick="appendValue('.')"> <b> . </b> </button>
+                <button onclick="appendValue('0')" class="color1 new1"> <b> 0 </b> </button>
+                <button class="rrr new"onclick="appendValue('%')"> <b> % </b> </button>
+                <button class="equal new0" onclick="calculate()"> <b> = </b> </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let display = document.getElementById('displaynum');
+        let justCalculated = false;
+        function appendValue (value) {
+            if (justCalculated) {
+                display.innerText = "";
+                justCalculated = false;
+            };
+            const lastChar = display.innerText.charAt(display.innerText.length - 1);
+            if (['+', '-', '*', '/', '.', '%'].includes(value) && ['+', '-', '*', '/', '.', '%'].includes(lastChar)) {
+                display.innerText = display.innerText.slice(0, -1) + value;
+            } else {
+                display.innerText += value;
+            };
+            document.getElementById('display').value = display.innerText;
+        };
+        function clearDisplay () {
+            display.innerText = "";
+            justCalculated = false;
+        };
+        function calculate() {
+            try {
+                if (display.innerText.trim() === "") {
+                    display.innerText = "";
+                } else {
+                    display.innerText = eval(display.innerText);
+                    justCalculated = true;
+                }
+            } catch {
+                display.innerText = "";
+            };
+        };
+
+        let boxneww = document.getElementById("welcome");
+        setTimeout (() => {
+            boxneww.style.display = "inline-block";
+        }, 2000)
+        function clicknow () {
+            boxneww.style.display = "none";
+        };
+        const names = [
+            "Calculators: Making_Math_Effortless!",
+            "Your_Go-To_Math_Machine!",
+            "Unlock_the_power_of_numbers_with_us!",
+            "Ideal_home_calculator!" 
+        ];
+        const typer = document.getElementById("typer");
+        let i = 0;
+        let n = names.length;
+        setInterval(() => {
+            let word = names[i];
+            let j = 0;
+            const value = setInterval(() => {
+                if (j < word.length) {
+                    typer.innerText = typer.innerText.slice(0, -1)
+                    typer.innerText += word[j];
+                    typer.innerText += "|"
+                } else {
+                    stopinterval();
+                };
+                function stopinterval() {
+                    clearInterval(value)
+                };
+                j++;
+            }, 100);
+            i++;
+            i = i % n;
+            typer.innerText = "";
+        }, 5000);
+
+        let box = document.querySelector("#box");
+        let a = document.getElementById("bg_img");
+        let b = document.getElementById("displaynum");
+        let c = document.getElementById("calc");
+        let d = document.querySelectorAll(".new");
+        let e = document.querySelectorAll(".new1");
+        let f = document.querySelectorAll(".new0");
+        let g = document.querySelector(".equal");
+        function themeMode () {
+            if (a.getAttribute("src") === "https://wallpaperbat.com/img/632439-nature-night-hd-wallpaper.jpg") {
+                a.setAttribute("src", "https://assets.weforum.org/article/image/0ZUBmNNVLRCfn3NdU55nQ00UF64m2ObtcDS0grx02fA.jpg");
+            } else {
+                a.setAttribute("src", "https://wallpaperbat.com/img/632439-nature-night-hd-wallpaper.jpg");
+            };
+            b.classList.toggle("display1");
+            c.classList.toggle("calculator1"); 
+            d.forEach(el => {
+                el.classList.toggle("button1");
+            });
+            e.forEach(el => {
+                el.classList.toggle("button1");
+            });
+            e.forEach(el => {
+                el.classList.toggle("color2");
+            });
+            f.forEach(el => {
+                el.classList.toggle("color0");
+            });
+            g.classList.toggle("equal1");
+        };
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRbTcd4fC2OELaCftkk8K1eznIdOOIvIsF8A&s/images/favicon.ico">
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+        .color1 {
+            color: white;
+        }
+        .calculator {
+            width: 300px;
+            height: 450px;
+            margin: auto;
+            padding: 20px;
+            background: rgb(255, 255, 255, 0);
+            border-radius: 20px;
+            box-shadow: 0 0 15px 5px #aaa;
+            position: absolute;
+            bottom: 50px;
+            top: 150px;
+            left: 50px;
+            right: 50px;
+        }
+        .calculator1 {
+            border: 1px solid gray;
+            box-shadow: 0 0 20px 10px #000;
+        }
+        .display {
+            color: white;
+            background: rgb(255, 255, 255, 0);
+            padding: 20px;
+            font-size: 28px;
+            text-align: right;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            min-height: 40px;
+            border: 1px solid #ccc;
+            box-shadow: inset 0 0 15px 5px #505050;
+        }
+        .display1 {
+            color: black;
+            border: 1px solid gray;
+            box-shadow: inset 0 0 15px 5px rgba(0,0,0,0.5);
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        button {
+            padding: 20px;
+            font-size: 20px;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: 0.2s;
+            background: linear-gradient(to right, blue, skyblue);
+        }
+        .button1 {
+            background: linear-gradient(to right, rgb(2, 183, 255), white);
+            opacity: 0.7;
+        }
+        .color2 {
+            color: #000;
+        }
+        .kgf {
+            color: red;
+            background: linear-gradient(to right, rgb(2, 183, 255), white);
+        }
+        .rrr {
+            color: blue;
+        }
+        .rrr:hover {
+            color: white;
+        }
+        .equal {
+            background: linear-gradient(to right, rgb(2, 183, 255), white);
+            color: black;
+            border-radius: 50%;
+        }
+        .color0 {
+            background: linear-gradient(to right, #07f5c5, white);
+        }
+        .equal1 {
+            color: #0f7280;
+        }
+        button:hover {
+            background: linear-gradient(to right, skyblue, blue);
+            color: black;
+        }
+        .equal:hover, .kgf:hover {
+            background: linear-gradient(to right, white, rgb(2, 183, 255));
+        }
+        .img_div {
+            height: 91.2vh;  
+            overflow: hidden; 
+        }
+        #bg_img {
+            background-repeat: no-repeat;
+            width: 100%;
+            position: relative;
+            object-fit: cover;
+        }
+        header {
+            background-color: black;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            width: 1337px;
+            margin: auto;
+        }
+        #theme {
+            color: white;
+            padding: 20px;
+        }
+        #logo {
+            height: 50px;
+        }
+        .welcome{
+            display: inline-block;
+            border: 5px solid#07f5c5;
+            border-radius: 20px;
+            padding: 4px;
+            position: absolute;
+            z-index: 88;
+            left: 39%;
+            display: none;
+        }
+        .innerone{
+            border: 3px solid#07f5c5;
+            border-radius: 15px;
+            padding: 10px;
+            background-color: white;
+        }
+        .popbtn{
+            display: flex;
+            justify-content: center;
+        }
+        .btnpop {
+            background: linear-gradient(to right, #07f5c5, white);
+        }
+        .mbox {
+            background: linear-gradient(to bottom, rgb(2, 183, 255), #07f5c5);
+            color: white;
+            margin: 0 auto;
+            font-size: 35px;
+            height: 50px;
+            width: 100%;  
+            position: absolute;
+            z-index: 3;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class = "header">
+            <div><img src="data:image/png;base64,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" alt="" id = "logo"></div>
+            <div> <i class="fa fa-adjust" id = "theme" onclick = "themeMode ()"></i> </div>
+        </div>
+    </header>
+    <div class = "mbox">
+        <span id = "typer"></span>
+    </div>
+    <div id = "welcome" class = "welcome">
+        <div class = "innerone">
+            <div>
+                <h2 class = "h2">Welcome to my website!</h2>
+            </div>
+            <div class = "popbtn"> <button class = "btnpop" onclick = "clicknow ()"> <b> OK </b> </button> </div>
+        </div>
+    </div>
+    <div id = "box" class = "deactive">
+        <div class="img_div">
+            <img src = "https://wallpaperbat.com/img/632439-nature-night-hd-wallpaper.jpg"  id = "bg_img">
+        </div>
+        <div class="calculator" id = "calc">
+            <div class="display" id="displaynum"></div>
+            <div class="buttons">
+                <button class="kgf new0"onclick="clearDisplay()"> <b> C </b> </button>
+                <button class="rrr new"onclick="appendValue('(')"> <b> ( </b> </button>
+                <button class="rrr new"onclick="appendValue(')')"> <b> ) </b> </button>
+                <button class="rrr new"onclick="appendValue('/')"> <b> ÷ </b></button>
+
+                <button onclick="appendValue('7')" class="color1 new1"> <b> 7 </b> </button>
+                <button onclick="appendValue('8')" class="color1 new1"> <b> 8 </b> </button>
+                <button onclick="appendValue('9')" class="color1 new1"> <b> 9 </b> </button>
+                <button class="rrr new"onclick="appendValue('*')"> <b> x </b></button>
+
+                <button onclick="appendValue('4')" class="color1 new1"> <b> 4 </b> </button>
+                <button onclick="appendValue('5')" class="color1 new1"> <b> 5 </b> </button>
+                <button onclick="appendValue('6')" class="color1 new1"> <b> 6 </b> </button>
+                <button class="rrr new"onclick="appendValue('-')"> <b> - </b> </button>
+
+                <button onclick="appendValue('1')" class="color1 new1"> <b> 1 </b> </button>
+                <button onclick="appendValue('2')" class="color1 new1"> <b> 2 </b> </button>
+                <button onclick="appendValue('3')" class="color1 new1"> <b> 3 </b> </button>
+                <button class="rrr new"onclick="appendValue('+')"> <b> + </b> </button> 
+
+                <button class="rrr new"onclick="appendValue('.')"> <b> . </b> </button>
+                <button onclick="appendValue('0')" class="color1 new1"> <b> 0 </b> </button>
+                <button class="rrr new"onclick="appendValue('%')"> <b> % </b> </button>
+                <button class="equal new0" onclick="calculate()"> <b> = </b> </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let display = document.getElementById('displaynum');
+        let justCalculated = false;
+        function appendValue (value) {
+            if (justCalculated) {
+                display.innerText = "";
+                justCalculated = false;
+            };
+            const lastChar = display.innerText.charAt(display.innerText.length - 1);
+            if (['+', '-', '*', '/', '.', '%'].includes(value) && ['+', '-', '*', '/', '.', '%'].includes(lastChar)) {
+                display.innerText = display.innerText.slice(0, -1) + value;
+            } else {
+                display.innerText += value;
+            };
+            document.getElementById('display').value = display.innerText;
+        };
+        function clearDisplay () {
+            display.innerText = "";
+            justCalculated = false;
+        };
+        function calculate() {
+            try {
+                if (display.innerText.trim() === "") {
+                    display.innerText = "";
+                } else {
+                    display.innerText = eval(display.innerText);
+                    justCalculated = true;
+                }
+            } catch {
+                display.innerText = "";
+            };
+        };
+
+        let boxneww = document.getElementById("welcome");
+        setTimeout (() => {
+            boxneww.style.display = "inline-block";
+        }, 2000)
+        function clicknow () {
+            boxneww.style.display = "none";
+        };
+        const names = [
+            "Calculators: Making_Math_Effortless!",
+            "Your_Go-To_Math_Machine!",
+            "Unlock_the_power_of_numbers_with_us!",
+            "Ideal_home_calculator!" 
+        ];
+        const typer = document.getElementById("typer");
+        let i = 0;
+        let n = names.length;
+        setInterval(() => {
+            let word = names[i];
+            let j = 0;
+            const value = setInterval(() => {
+                if (j < word.length) {
+                    typer.innerText = typer.innerText.slice(0, -1)
+                    typer.innerText += word[j];
+                    typer.innerText += "|"
+                } else {
+                    stopinterval();
+                };
+                function stopinterval() {
+                    clearInterval(value)
+                };
+                j++;
+            }, 100);
+            i++;
+            i = i % n;
+            typer.innerText = "";
+        }, 5000);
+
+        let box = document.querySelector("#box");
+        let a = document.getElementById("bg_img");
+        let b = document.getElementById("displaynum");
+        let c = document.getElementById("calc");
+        let d = document.querySelectorAll(".new");
+        let e = document.querySelectorAll(".new1");
+        let f = document.querySelectorAll(".new0");
+        let g = document.querySelector(".equal");
+        function themeMode () {
+            if (a.getAttribute("src") === "https://wallpaperbat.com/img/632439-nature-night-hd-wallpaper.jpg") {
+                a.setAttribute("src", "https://assets.weforum.org/article/image/0ZUBmNNVLRCfn3NdU55nQ00UF64m2ObtcDS0grx02fA.jpg");
+            } else {
+                a.setAttribute("src", "https://wallpaperbat.com/img/632439-nature-night-hd-wallpaper.jpg");
+            };
+            b.classList.toggle("display1");
+            c.classList.toggle("calculator1"); 
+            d.forEach(el => {
+                el.classList.toggle("button1");
+            });
+            e.forEach(el => {
+                el.classList.toggle("button1");
+            });
+            e.forEach(el => {
+                el.classList.toggle("color2");
+            });
+            f.forEach(el => {
+                el.classList.toggle("color0");
+            });
+            g.classList.toggle("equal1");
+        };
+    </script>
 </body>
 </html>
